@@ -34,7 +34,13 @@ int main(int argc, char* argv[]) {
     if (argc != 2) {
         return 1;
     }
-    int n = std::stoi(argv[1]);
+    char* sn = argv[1];
+    int n = 0, ind = 0;
+    while (sn[ind] != '\0') {
+        n *= 10;
+        n += sn[ind] - '0';
+        ind++;
+    }
 
     int* array = create_array(n);
     for (int i = 0; i < n; i++) {
