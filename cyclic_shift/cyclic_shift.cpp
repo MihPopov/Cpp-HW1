@@ -4,13 +4,13 @@ int* create_array(size_t size) {
     return new int[size];
 }
 
-void print_array(int* array, size_t n) {
-    for (size_t i = 0; i < n; i++) {
+void print_array(int* array, size_t size) {
+    for (size_t i = 0; i < size; i++) {
         std::cout << array[i] << '\n';
     }
-    for (size_t i = 0; i < n; i++) {
+    for (size_t i = 0; i < size; i++) {
         std::cout << array[i];
-        if (i != n - 1) {
+        if (i != size - 1) {
             std::cout << ' ';
         }
         else {
@@ -34,12 +34,12 @@ int main(int argc, char* argv[]) {
     if (argc != 2) {
         return 1;
     }
-    char* sn = argv[1];
-    int n = 0, ind = 0;
-    while (sn[ind] != '\0') {
+    char* n_str = argv[1];
+    int n = 0, index = 0;
+    while (n_str[index] != '\0') {
         n *= 10;
-        n += sn[ind] - '0';
-        ind++;
+        n += n_str[index] - '0';
+        index++;
     }
 
     int* array = create_array(n);

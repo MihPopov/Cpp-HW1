@@ -8,12 +8,12 @@ int main(int argc, char* argv[]) {
     if (argc != 2) {
         return 1;
     }
-    char* sn = argv[1];
-    int n = 0, ind = 0;
-    while (sn[ind] != '\0') {
+    char* n_str = argv[1];
+    int n = 0, index = 0;
+    while (n_str[index] != '\0') {
         n *= 10;
-        n += sn[ind] - '0';
-        ind++;
+        n += n_str[index] - '0';
+        index++;
     }
 
     double* a = create_array(n);

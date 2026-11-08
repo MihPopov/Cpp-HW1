@@ -1,5 +1,15 @@
 #include <iostream>
 
+int len_of_number(char* number, bool has_sign) {
+    int len = 0;
+    int index = has_sign ? 1 : 0;
+    while (number[index] != '.' && number[index] != '\0') {
+        len++;
+        index++;
+    }
+    return len;
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         return 1;
@@ -8,108 +18,78 @@ int main(int argc, char* argv[]) {
     char* number1 = argv[1];
     char* number2 = argv[2];
 
-    if (number1[0] == '-' and number2[0] != '-') {
+    if (number1[0] == '-' && number2[0] != '-') {
         std::cout << "less\n";
         return 0;
     }
-    else if (number1[0] != '-' and number2[0] == '-') {
+    else if (number1[0] != '-' && number2[0] == '-') {
         std::cout << "greater\n";
         return 0;
     }
 
-    int i1 = (number1[0] == '+' or number1[0] == '-');
-    int i2 = (number2[0] == '+' or number2[0] == '-');
+    bool has_sign_1 = (number1[0] == '+' || number1[0] == '-');
+    bool has_sign_2 = (number2[0] == '+' || number2[0] == '-');
+    bool is_negative = number1[0] == '-';
 
-    int len1 = 0, len2 = 0;
+    int len1 = len_of_number(number1, has_sign_1);
+    int len2 = len_of_number(number2, has_sign_2);
 
-    while (number1[i1] != '.' and number1[i1] != '\0') {
-        len1++;
-        i1++;
-    }
-    while (number2[i2] != '.' and number2[i2] != '\0') {
-        len2++;
-        i2++;
-    }
+    bool invert_result = is_negative;
 
     if (len1 != len2) {
-        if (number1[0] == '-') {
-            if (len1 < len2) {
-                std::cout << "greater\n";
-                return 0;
-            }
-            else {
-                std::cout << "less\n";
-                return 0;
-            }
+        bool n1_is_less = len1 < len2;
+        if (invert_result) n1_is_less = !n1_is_less;
+        if (n1_is_less) {
+            std::cout << "less\n";
         }
         else {
-            if (len1 < len2) {
-                std::cout << "less\n";
-                return 0;
-            }
-            else {
-                std::cout << "greater\n";
-                return 0;
-            }
+            std::cout << "greater\n";
         }
+        return 0;
     }
 
-    int s1 = (number1[0] == '+' or number1[0] == '-');
-    int s2 = (number2[0] == '+' or number2[0] == '-');
+    int number1_index = has_sign_1 ? 1 : 0;
+    int number2_index = has_sign_2 ? 1 : 0;
     for (int i = 0; i < len1; i++) {
-        if (number1[0] == '-') {
-            if (number1[i + s1] < number2[i + s2]) {
-                std::cout << "greater\n";
-                return 0;
-            }
-            else if (number1[i + s1] > number2[i + s2]) {
+        char digit_1 = number1[i + number1_index];
+        char digit_2 = number2[i + number2_index];
+        if (digit_1 != digit_2) {
+            bool d1_is_less = digit_1 < digit_2;
+            if (invert_result) d1_is_less = !d1_is_less;
+            if (d1_is_less) {
                 std::cout << "less\n";
-                return 0;
             }
-        }
-        else {
-            if (number1[i + s1] < number2[i + s2]) {
-                std::cout << "less\n";
-                return 0;
-            }
-            else if (number1[i + s1] > number2[i + s2]) {
+            else {
                 std::cout << "greater\n";
-                return 0;
             }
+            return 0;
         }
     }
 
-    if (number1[i1] == '\0' and number2[i2] == '\0') {
+    number1_index += len1;
+    number2_index += len2;
+    if (number1[number1_index] == '\0' && number2[number2_index] == '\0') {
         std::cout << "equal\n";
         return 0;
     }
-    if (number1[i1] == '.') i1++;
-    if (number2[i2] == '.') i2++;
-    while (number1[i1] != '\0' or number2[i2] != '\0') {
-        char c1 = (number1[i1] == '\0') ? '0' : number1[i1];
-        char c2 = (number2[i2] == '\0') ? '0' : number2[i2];
-        if (number1[0] == '-') {
-            if (c1 < c2) {
-                std::cout << "greater\n";
-                return 0;
-            }
-            else if (c1 > c2) {
+    if (number1[number1_index] == '.') number1_index++;
+    if (number2[number2_index] == '.') number2_index++;
+    while (number1[number1_index] != '\0' || number2[number2_index] != '\0') {
+        char digit_1 = (number1[number1_index] == '\0') ? '0' : number1[number1_index];
+        char digit_2 = (number2[number2_index] == '\0') ? '0' : number2[number2_index];
+        if (digit_1 != digit_2) {
+            bool d1_is_less = digit_1 < digit_2;
+            if (invert_result) d1_is_less = !d1_is_less;
+            if (d1_is_less) {
                 std::cout << "less\n";
-                return 0;
             }
-        }
-        else {
-            if (c1 < c2) {
-                std::cout << "less\n";
-                return 0;
-            }
-            else if (c1 > c2) {
+            else {
                 std::cout << "greater\n";
-                return 0;
             }
+            return 0;
         }
-        if (number1[i1] != '\0') i1++;
-        if (number2[i2] != '\0') i2++;
+        if (number1[number1_index] != '\0') number1_index++;
+        if (number2[number2_index] != '\0') number2_index++;
     }
 
     std::cout << "equal\n";
